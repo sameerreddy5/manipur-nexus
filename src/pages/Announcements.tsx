@@ -7,24 +7,18 @@ export const AnnouncementsPage = () => {
 
   const handleCreateSuccess = () => {
     setShowCreateForm(false);
-    // Refresh the list by toggling the key
-    window.location.reload();
   };
 
-  if (showCreateForm) {
-    return (
-      <div className="p-6">
+  return (
+    <div className="space-y-6">
+      {showCreateForm ? (
         <CreateAnnouncementForm
           onSuccess={handleCreateSuccess}
           onCancel={() => setShowCreateForm(false)}
         />
-      </div>
-    );
-  }
-
-  return (
-    <div className="p-6">
-      <AnnouncementsList onCreateNew={() => setShowCreateForm(true)} />
+      ) : (
+        <AnnouncementsList onCreateNew={() => setShowCreateForm(true)} />
+      )}
     </div>
   );
 };

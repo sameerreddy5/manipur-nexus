@@ -35,7 +35,12 @@ const batches = [
   "MTech 2024", "MTech 2023", "PhD 2024", "PhD 2023"
 ];
 
-export const AddUserForm = () => {
+interface AddUserFormProps {
+  onSuccess?: () => void;
+  onCancel?: () => void;
+}
+
+export const AddUserForm = ({ onSuccess, onCancel }: AddUserFormProps) => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -117,6 +122,7 @@ export const AddUserForm = () => {
           description: `${formData.name} has been added as ${formData.role}`,
         });
         resetForm();
+        onSuccess?.();
       }
     } catch (err: any) {
       setError(err.message);
@@ -134,30 +140,13 @@ export const AddUserForm = () => {
   const shouldShowBatch = formData.role === "Student";
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center space-x-3">
-        <UserPlus className="h-8 w-8 text-primary" />
-        <div>
-          <h1 className="text-3xl font-heading font-bold">Add New User</h1>
-          <p className="text-muted-foreground">Create a new account for IIIT Manipur portal</p>
-        </div>
-      </div>
-
-      <Card className="academic-card">
-        <CardHeader>
-          <CardTitle>User Information</CardTitle>
-          <CardDescription>
-            Fill in the details to create a new user account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <Alert variant="destructive" className="animate-fade-in">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <Alert variant="destructive" className="animate-fade-in">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Name */}
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
@@ -286,29 +275,26 @@ export const AddUserForm = () => {
                 </div>
               )}
             </div>
-
-            <div className="flex space-x-4">
-              <Button 
-                type="submit" 
-                variant="academic" 
-                size="lg" 
-                disabled={isLoading}
-                className="flex-1"
-              >
-                {isLoading ? "Creating User..." : "Create User"}
-              </Button>
-              <Button 
-                type="button" 
-                variant="outline" 
-                size="lg"
-                onClick={resetForm}
-              >
-                Reset
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+      
+      <div className="flex gap-2 pt-4">
+        <Button 
+          type="submit" 
+          disabled={isLoading}
+          className="flex-1"
+        >
+          {isLoading ? "Creating..." : "Create User"}
+        </Button>
+        <Button 
+          type="button" 
+          variant="outline"
+          onClick={() => {
+            resetForm();
+            onCancel?.();
+          }}
+        >
+          Cancel
+        </Button>
+      </div>
+    </form>
   );
 };
