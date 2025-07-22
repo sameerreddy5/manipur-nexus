@@ -20,7 +20,7 @@ export const CreateAnnouncementForm = ({ onSuccess, onCancel }: CreateAnnounceme
   const [isUrgent, setIsUrgent] = useState(false);
   const [targetRoles, setTargetRoles] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
+  const { user, session } = useAuth();
 
   const roles = ['Admin', 'Faculty', 'Student', 'Director'];
 
@@ -52,7 +52,7 @@ export const CreateAnnouncementForm = ({ onSuccess, onCancel }: CreateAnnounceme
           content: content.trim(),
           is_urgent: isUrgent,
           target_roles: targetRoles.length > 0 ? targetRoles : [],
-          author_id: user.session?.user?.id
+          author_id: session?.user?.id
         });
 
       if (error) throw error;
