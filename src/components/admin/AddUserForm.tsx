@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { UserPlus, Mail, Phone, User, Key, Building, GraduationCap } from "lucide-react";
 
 interface FormData {
@@ -27,16 +30,9 @@ const roles = [
   "Mess Supervisor"
 ];
 
-const departments = [
-  "Computer Science & Engineering",
-  "Electronics & Communication",
-  "Mathematics",
-  "Physics",
-  "Humanities"
-];
-
 const batches = [
-  "2024", "2023", "2022", "2021", "2020"
+  "BTech 2024", "BTech 2023", "BTech 2022", "BTech 2021", 
+  "MTech 2024", "MTech 2023", "PhD 2024", "PhD 2023"
 ];
 
 export const AddUserForm = () => {
@@ -49,37 +45,89 @@ export const AddUserForm = () => {
     department: "",
     batch: ""
   });
+  const [departments, setDepartments] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const { toast } = useToast();
+  const { createUser } = useAuth();
+
+  useEffect(() => {
+    // Fetch departments from Supabase
+    const fetchDepartments = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('departments')
+          .select('name')
+          .order('name');
+        
+        if (error) throw error;
+        
+        setDepartments(data?.map(dept => dept.name) || []);
+      } catch (error) {
+        console.error('Error fetching departments:', error);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+      role: "",
+      department: "",
+      batch: ""
+    });
+    setError("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const { error } = await createUser(
+        formData.email,
+        formData.password,
+        formData.name,
+        formData.role,
+        formData.phone || undefined,
+        formData.department || undefined,
+        formData.batch || undefined
+      );
+
+      if (error) {
+        setError(error.message);
+        toast({
+          title: "Error Creating User",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "User Created Successfully",
+          description: `${formData.name} has been added as ${formData.role}`,
+        });
+        resetForm();
+      }
+    } catch (err: any) {
+      setError(err.message);
       toast({
-        title: "User Added Successfully",
-        description: `${formData.name} has been added as ${formData.role}`,
+        title: "Error Creating User",
+        description: err.message,
+        variant: "destructive",
       });
-      
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        phone: "",
-        role: "",
-        department: "",
-        batch: ""
-      });
-      
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const shouldShowDepartment = formData.role === "Faculty" || formData.role === "Student";
@@ -104,6 +152,11 @@ export const AddUserForm = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <Alert variant="destructive" className="animate-fade-in">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Name */}
               <div className="space-y-2">
@@ -248,15 +301,7 @@ export const AddUserForm = () => {
                 type="button" 
                 variant="outline" 
                 size="lg"
-                onClick={() => setFormData({
-                  name: "",
-                  email: "",
-                  password: "",
-                  phone: "",
-                  role: "",
-                  department: "",
-                  batch: ""
-                })}
+                onClick={resetForm}
               >
                 Reset
               </Button>
