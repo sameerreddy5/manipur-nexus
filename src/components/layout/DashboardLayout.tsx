@@ -21,6 +21,12 @@ import { AnnouncementsPage } from "@/pages/Announcements";
 import { ProfilePage } from "@/pages/Profile";
 import { UsersPage } from "@/pages/Users";
 import { DepartmentsPage } from "@/pages/Departments";
+import { AcademicQueriesPage } from "@/pages/AcademicQueries";
+import { TimetablePage } from "@/pages/Timetable";
+import { MessMenuPage } from "@/pages/MessMenu";
+import { HostelComplaintsPage } from "@/pages/HostelComplaints";
+import { HolidayCalendarPage } from "@/pages/HolidayCalendar";
+import { CourseAssignmentPage } from "@/pages/CourseAssignment";
 
 interface DashboardLayoutProps {
   userEmail: string;
@@ -174,10 +180,12 @@ export const DashboardLayout = ({ userEmail, userRole, onLogout }: DashboardLayo
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/users" element={<UsersPage />} />
               <Route path="/departments" element={<DepartmentsPage />} />
-              <Route path="/queries" element={<div className="text-center py-8 text-muted-foreground">Academic Queries - Coming Soon</div>} />
-              <Route path="/timetable" element={<div className="text-center py-8 text-muted-foreground">Timetable - Coming Soon</div>} />
-              <Route path="/mess" element={<div className="text-center py-8 text-muted-foreground">Mess Menu - Coming Soon</div>} />
-              <Route path="/complaints" element={<div className="text-center py-8 text-muted-foreground">Hostel Complaints - Coming Soon</div>} />
+              <Route path="/queries" element={<AcademicQueriesPage />} />
+              <Route path="/timetable" element={<TimetablePage />} />
+              <Route path="/mess" element={<MessMenuPage />} />
+              <Route path="/complaints" element={<HostelComplaintsPage />} />
+              <Route path="/holidays" element={<HolidayCalendarPage />} />
+              <Route path="/courses" element={<CourseAssignmentPage />} />
               <Route path="/reports" element={<div className="text-center py-8 text-muted-foreground">Reports - Coming Soon</div>} />
             </Routes>
           </div>

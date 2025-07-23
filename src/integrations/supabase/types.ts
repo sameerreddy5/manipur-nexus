@@ -14,6 +14,74 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_queries: {
+        Row: {
+          course_id: string | null
+          created_at: string
+          faculty_id: string
+          id: string
+          message: string
+          parent_id: string | null
+          status: string
+          student_id: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string
+          faculty_id: string
+          id?: string
+          message: string
+          parent_id?: string | null
+          status?: string
+          student_id: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string
+          faculty_id?: string
+          id?: string
+          message?: string
+          parent_id?: string | null
+          status?: string
+          student_id?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_academic_queries_course"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_academic_queries_faculty"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "fk_academic_queries_parent"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "academic_queries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_academic_queries_student"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       announcements: {
         Row: {
           author_id: string
@@ -82,6 +150,99 @@ export type Database = {
           },
         ]
       }
+      course_assignments: {
+        Row: {
+          batch_id: string
+          course_id: string
+          created_at: string
+          faculty_id: string
+          id: string
+          semester: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          batch_id: string
+          course_id: string
+          created_at?: string
+          faculty_id: string
+          id?: string
+          semester: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          batch_id?: string
+          course_id?: string
+          created_at?: string
+          faculty_id?: string
+          id?: string
+          semester?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_course_assignments_batch"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_course_assignments_course"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_course_assignments_faculty"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          code: string
+          created_at: string
+          credits: number
+          department_id: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          credits?: number
+          department_id?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          credits?: number
+          department_id?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_courses_department"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       departments: {
         Row: {
           code: string
@@ -105,6 +266,118 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      holidays: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          name: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          name: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          name?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      hostel_complaints: {
+        Row: {
+          created_at: string
+          description: string
+          hostel_block: string
+          id: string
+          issue_type: string
+          room_number: string
+          status: string
+          student_id: string
+          updated_at: string
+          warden_remarks: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          hostel_block: string
+          id?: string
+          issue_type: string
+          room_number: string
+          status?: string
+          student_id: string
+          updated_at?: string
+          warden_remarks?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          hostel_block?: string
+          id?: string
+          issue_type?: string
+          room_number?: string
+          status?: string
+          student_id?: string
+          updated_at?: string
+          warden_remarks?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_hostel_complaints_student"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      mess_menus: {
+        Row: {
+          created_at: string
+          created_by: string
+          date: string
+          id: string
+          items: string[]
+          meal_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          date: string
+          id?: string
+          items?: string[]
+          meal_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          date?: string
+          id?: string
+          items?: string[]
+          meal_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_mess_menus_created_by"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -141,6 +414,57 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      timetables: {
+        Row: {
+          batch_id: string
+          created_at: string
+          day_of_week: number
+          faculty_id: string | null
+          id: string
+          room: string | null
+          subject: string
+          time_slot: string
+          updated_at: string
+        }
+        Insert: {
+          batch_id: string
+          created_at?: string
+          day_of_week: number
+          faculty_id?: string | null
+          id?: string
+          room?: string | null
+          subject: string
+          time_slot: string
+          updated_at?: string
+        }
+        Update: {
+          batch_id?: string
+          created_at?: string
+          day_of_week?: number
+          faculty_id?: string | null
+          id?: string
+          room?: string | null
+          subject?: string
+          time_slot?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_timetables_batch"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_timetables_faculty"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
     }
     Views: {
