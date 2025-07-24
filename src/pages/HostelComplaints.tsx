@@ -118,16 +118,16 @@ export const HostelComplaintsPage = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-bold">Hostel Complaints</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold">Hostel Complaints</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
             {isStudent ? "Submit and track your hostel complaints" : "Manage hostel complaints"}
           </p>
         </div>
         {isStudent && (
-          <Button onClick={() => setShowForm(true)}>
+          <Button onClick={() => setShowForm(true)} className="w-full sm:w-auto">
             <Plus className="mr-2 h-4 w-4" />
             New Complaint
           </Button>
@@ -144,7 +144,7 @@ export const HostelComplaintsPage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium">Hostel Block</label>
                   <Input
@@ -193,9 +193,9 @@ export const HostelComplaintsPage = () => {
                   required
                 />
               </div>
-              <div className="flex space-x-2">
-                <Button type="submit">Submit Complaint</Button>
-                <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button type="submit" className="w-full sm:w-auto">Submit Complaint</Button>
+                <Button type="button" variant="outline" onClick={() => setShowForm(false)} className="w-full sm:w-auto">
                   Cancel
                 </Button>
               </div>
@@ -217,56 +217,58 @@ export const HostelComplaintsPage = () => {
               No complaints found
             </p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Block/Room</TableHead>
-                  <TableHead>Issue Type</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  {isWarden && <TableHead>Actions</TableHead>}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {complaints.map((complaint) => (
-                  <TableRow key={complaint.id}>
-                    <TableCell>
-                      {complaint.hostel_block} - {complaint.room_number}
-                    </TableCell>
-                    <TableCell>{complaint.issue_type}</TableCell>
-                    <TableCell className="max-w-xs truncate">
-                      {complaint.description}
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(complaint.status)}>
-                        {complaint.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {new Date(complaint.created_at).toLocaleDateString()}
-                    </TableCell>
-                    {isWarden && (
-                      <TableCell>
-                        <Select
-                          value={complaint.status}
-                          onValueChange={(value) => updateComplaintStatus(complaint.id, value)}
-                        >
-                          <SelectTrigger className="w-32">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Pending">Pending</SelectItem>
-                            <SelectItem value="In Progress">In Progress</SelectItem>
-                            <SelectItem value="Resolved">Resolved</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                    )}
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="min-w-[120px]">Block/Room</TableHead>
+                    <TableHead className="min-w-[100px]">Issue Type</TableHead>
+                    <TableHead className="min-w-[200px]">Description</TableHead>
+                    <TableHead className="min-w-[80px]">Status</TableHead>
+                    <TableHead className="min-w-[100px]">Date</TableHead>
+                    {isWarden && <TableHead className="min-w-[120px]">Actions</TableHead>}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {complaints.map((complaint) => (
+                    <TableRow key={complaint.id}>
+                      <TableCell>
+                        {complaint.hostel_block} - {complaint.room_number}
+                      </TableCell>
+                      <TableCell>{complaint.issue_type}</TableCell>
+                      <TableCell className="max-w-xs truncate">
+                        {complaint.description}
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(complaint.status)}>
+                          {complaint.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {new Date(complaint.created_at).toLocaleDateString()}
+                      </TableCell>
+                      {isWarden && (
+                        <TableCell>
+                          <Select
+                            value={complaint.status}
+                            onValueChange={(value) => updateComplaintStatus(complaint.id, value)}
+                          >
+                            <SelectTrigger className="w-32">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Pending">Pending</SelectItem>
+                              <SelectItem value="In Progress">In Progress</SelectItem>
+                              <SelectItem value="Resolved">Resolved</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

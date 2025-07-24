@@ -109,16 +109,16 @@ export const HolidayCalendarPage = () => {
   const monthlyHolidays = getMonthlyHolidays();
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-bold">Holiday Calendar</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold">Holiday Calendar</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
             {isAdmin ? "Manage institutional holidays" : "View holiday calendar"}
           </p>
         </div>
         {isAdmin && (
-          <Button onClick={() => setShowForm(true)}>
+          <Button onClick={() => setShowForm(true)} className="w-full sm:w-auto">
             <Plus className="mr-2 h-4 w-4" />
             Add Holiday
           </Button>
@@ -144,7 +144,7 @@ export const HolidayCalendarPage = () => {
                   required
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium">Date</label>
                   <Input
@@ -171,9 +171,9 @@ export const HolidayCalendarPage = () => {
                   </Select>
                 </div>
               </div>
-              <div className="flex space-x-2">
-                <Button type="submit">Add Holiday</Button>
-                <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button type="submit" className="w-full sm:w-auto">Add Holiday</Button>
+                <Button type="button" variant="outline" onClick={() => setShowForm(false)} className="w-full sm:w-auto">
                   Cancel
                 </Button>
               </div>
@@ -182,8 +182,8 @@ export const HolidayCalendarPage = () => {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card>
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
+        <Card className="xl:col-span-1">
           <CardHeader>
             <CardTitle className="flex items-center">
               <CalendarDays className="mr-2 h-5 w-5" />
@@ -198,14 +198,14 @@ export const HolidayCalendarPage = () => {
             ) : (
               <div className="space-y-3">
                 {upcomingHolidays.map((holiday) => (
-                  <div key={holiday.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div>
+                  <div key={holiday.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 border rounded-lg gap-2">
+                    <div className="flex-grow">
                       <p className="font-medium">{holiday.name}</p>
                       <p className="text-sm text-muted-foreground">
                         {new Date(holiday.date).toLocaleDateString()}
                       </p>
                     </div>
-                    <Badge className={getTypeColor(holiday.type)}>
+                    <Badge className={`w-fit ${getTypeColor(holiday.type)}`}>
                       {holiday.type}
                     </Badge>
                   </div>
@@ -215,7 +215,7 @@ export const HolidayCalendarPage = () => {
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2">
+        <Card className="xl:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Calendar className="mr-2 h-5 w-5" />
@@ -228,15 +228,16 @@ export const HolidayCalendarPage = () => {
                 No holidays found
               </p>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Holiday Name</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Day</TableHead>
-                  </TableRow>
-                </TableHeader>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="min-w-[150px]">Holiday Name</TableHead>
+                      <TableHead className="min-w-[100px]">Date</TableHead>
+                      <TableHead className="min-w-[80px]">Type</TableHead>
+                      <TableHead className="min-w-[100px]">Day</TableHead>
+                    </TableRow>
+                  </TableHeader>
                 <TableBody>
                   {holidays.map((holiday) => {
                     const date = new Date(holiday.date);
@@ -260,7 +261,8 @@ export const HolidayCalendarPage = () => {
                     );
                   })}
                 </TableBody>
-              </Table>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>

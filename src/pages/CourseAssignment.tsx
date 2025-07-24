@@ -204,11 +204,11 @@ export const CourseAssignmentPage = () => {
   const facultyAssignments = getFacultyAssignments();
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-bold">Course Management</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold">Course Management</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
             {isAcademicSection ? "Manage courses and assignments" : "View your course assignments"}
           </p>
         </div>

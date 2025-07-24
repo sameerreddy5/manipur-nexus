@@ -124,16 +124,16 @@ export const MessMenuPage = () => {
   const weekMenu = getWeekMenu();
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-bold">Mess Menu</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold">Mess Menu</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
             {isMessSupervisor ? "Manage daily mess menus" : "View today's and weekly mess menu"}
           </p>
         </div>
         {isMessSupervisor && (
-          <Button onClick={() => setShowForm(true)}>
+          <Button onClick={() => setShowForm(true)} className="w-full sm:w-auto">
             <Plus className="mr-2 h-4 w-4" />
             Add Menu
           </Button>
@@ -150,7 +150,7 @@ export const MessMenuPage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium">Date</label>
                   <Input
@@ -186,9 +186,9 @@ export const MessMenuPage = () => {
                   required
                 />
               </div>
-              <div className="flex space-x-2">
-                <Button type="submit">Add Menu</Button>
-                <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button type="submit" className="w-full sm:w-auto">Add Menu</Button>
+                <Button type="button" variant="outline" onClick={() => setShowForm(false)} className="w-full sm:w-auto">
                   Cancel
                 </Button>
               </div>
@@ -216,30 +216,32 @@ export const MessMenuPage = () => {
                 <p className="text-center text-muted-foreground py-8">
                   No menu available for today
                 </p>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {todaysMenu.map((menu) => (
-                    <Card key={menu.id}>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-lg flex items-center">
-                          {getMealIcon(menu.meal_type)}
-                          <span className="ml-2">{menu.meal_type}</span>
-                          <Badge className={`ml-auto ${getMealColor(menu.meal_type)}`}>
-                            {menu.meal_type}
-                          </Badge>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="space-y-1">
-                          {menu.items.map((item, index) => (
-                            <li key={index} className="text-sm">• {item}</li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {todaysMenu.map((menu) => (
+                      <Card key={menu.id}>
+                        <CardHeader className="pb-3">
+                          <CardTitle className="text-lg flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                            <div className="flex items-center">
+                              {getMealIcon(menu.meal_type)}
+                              <span className="ml-2">{menu.meal_type}</span>
+                            </div>
+                            <Badge className={`w-fit ${getMealColor(menu.meal_type)}`}>
+                              {menu.meal_type}
+                            </Badge>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <ul className="space-y-1">
+                            {menu.items.map((item, index) => (
+                              <li key={index} className="text-sm">• {item}</li>
+                            ))}
+                          </ul>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -257,15 +259,16 @@ export const MessMenuPage = () => {
                 <p className="text-center text-muted-foreground py-8">
                   No menu available for this week
                 </p>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Meal</TableHead>
-                      <TableHead>Items</TableHead>
-                    </TableRow>
-                  </TableHeader>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="min-w-[100px]">Date</TableHead>
+                          <TableHead className="min-w-[80px]">Meal</TableHead>
+                          <TableHead className="min-w-[200px]">Items</TableHead>
+                        </TableRow>
+                      </TableHeader>
                   <TableBody>
                     {weekMenu.map((menu) => (
                       <TableRow key={menu.id}>
@@ -282,9 +285,10 @@ export const MessMenuPage = () => {
                         </TableCell>
                       </TableRow>
                     ))}
-                  </TableBody>
-                </Table>
-              )}
+                    </TableBody>
+                    </Table>
+                  </div>
+                )}
             </CardContent>
           </Card>
         </TabsContent>
