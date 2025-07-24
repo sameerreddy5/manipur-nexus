@@ -104,33 +104,33 @@ export const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-hero p-4">
-      <div className="w-full max-w-md space-y-6 animate-slide-up">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-hero px-4 py-6 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg space-y-4 sm:space-y-6 animate-slide-up">
         {/* IIIT Manipur Branding */}
-        <div className="text-center space-y-4">
-          <div className="flex items-center justify-center space-x-3">
-            <GraduationCap className="h-12 w-12 text-white" />
+        <div className="text-center space-y-2 sm:space-y-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-3">
+            <GraduationCap className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
             <div>
-              <h1 className="text-3xl font-heading font-bold text-white">IIIT Manipur</h1>
-              <p className="text-white/80 text-sm">Academic Portal</p>
+              <h1 className="text-2xl sm:text-3xl font-heading font-bold text-white">IIIT Manipur</h1>
+              <p className="text-white/80 text-xs sm:text-sm">Academic Portal</p>
             </div>
           </div>
         </div>
 
         <Card className="academic-card border-0 shadow-xl backdrop-blur-sm bg-white/95">
-          <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-2xl font-heading">
+          <CardHeader className="space-y-1 text-center px-4 sm:px-6 py-4 sm:py-6">
+            <CardTitle className="text-xl sm:text-2xl font-heading">
               {mode === "login" ? "Welcome Back" : "Create Account"}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm sm:text-base">
               {mode === "login" 
                 ? "Sign in to your IIIT Manipur account" 
                 : "Join the IIIT Manipur community"
               }
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               {error && (
                 <Alert variant="destructive" className="animate-fade-in">
                   <AlertDescription>{error}</AlertDescription>
@@ -272,14 +272,14 @@ export const AuthPage = () => {
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
+            <div className="mt-4 sm:mt-6 text-center">
               <button
                 type="button"
                 onClick={() => {
                   setMode(mode === "login" ? "signup" : "login");
                   setError("");
                 }}
-                className="text-sm text-primary hover:underline"
+                className="text-xs sm:text-sm text-primary hover:underline transition-colors"
               >
                 {mode === "login" 
                   ? "Don't have an account? Sign up" 
