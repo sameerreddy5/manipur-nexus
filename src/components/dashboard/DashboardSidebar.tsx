@@ -19,10 +19,11 @@ const sidebarItems: SidebarItem[] = [
   { title: "Profile", icon: Users, href: "/profile" },
   
   // Admin specific
+  { title: "Admin Dashboard", icon: PieChart, href: "/admin/dashboard", roles: ["Admin"] },
   { title: "Add User", icon: UserPlus, href: "/admin/add-user", roles: ["Admin"] },
   { title: "Manage Departments", icon: Building, href: "/admin/departments", roles: ["Admin"] },
-  { title: "Holiday Calendar", icon: Calendar, href: "/admin/holidays", roles: ["Admin"] },
-  { title: "System Analytics", icon: PieChart, href: "/admin/analytics", roles: ["Admin"] },
+  { title: "Batch Management", icon: Calendar, href: "/admin/batches", roles: ["Admin"] },
+  { title: "Backend Health", icon: AlertCircle, href: "/admin/health", roles: ["Admin"] },
   
   // Faculty specific
   { title: "My Courses", icon: BookOpen, href: "/faculty/courses", roles: ["Faculty"] },

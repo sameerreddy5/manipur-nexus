@@ -16,36 +16,42 @@ export type Database = {
     Tables: {
       academic_queries: {
         Row: {
+          attachments: string[] | null
           course_id: string | null
           created_at: string
           faculty_id: string
           id: string
           message: string
           parent_id: string | null
+          query_id: string | null
           status: string
           student_id: string
           subject: string
           updated_at: string
         }
         Insert: {
+          attachments?: string[] | null
           course_id?: string | null
           created_at?: string
           faculty_id: string
           id?: string
           message: string
           parent_id?: string | null
+          query_id?: string | null
           status?: string
           student_id: string
           subject: string
           updated_at?: string
         }
         Update: {
+          attachments?: string[] | null
           course_id?: string | null
           created_at?: string
           faculty_id?: string
           id?: string
           message?: string
           parent_id?: string | null
+          query_id?: string | null
           status?: string
           student_id?: string
           subject?: string
@@ -82,6 +88,36 @@ export type Database = {
           },
         ]
       }
+      activity_logs: {
+        Row: {
+          action: string
+          created_at: string
+          details: string | null
+          id: string
+          target_id: string | null
+          target_type: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: string | null
+          id?: string
+          target_id?: string | null
+          target_type?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: string | null
+          id?: string
+          target_id?: string | null
+          target_type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       announcements: {
         Row: {
           author_id: string
@@ -112,6 +148,36 @@ export type Database = {
           target_roles?: string[]
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      backend_health: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          last_check: string
+          response_time: number | null
+          service_name: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          last_check?: string
+          response_time?: number | null
+          service_name: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          last_check?: string
+          response_time?: number | null
+          service_name?: string
+          status?: string
         }
         Relationships: []
       }
@@ -247,25 +313,39 @@ export type Database = {
         Row: {
           code: string
           created_at: string
+          hod_id: string | null
           id: string
           name: string
+          type: string | null
           updated_at: string
         }
         Insert: {
           code: string
           created_at?: string
+          hod_id?: string | null
           id?: string
           name: string
+          type?: string | null
           updated_at?: string
         }
         Update: {
           code?: string
           created_at?: string
+          hod_id?: string | null
           id?: string
           name?: string
+          type?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "departments_hod_id_fkey"
+            columns: ["hod_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       holidays: {
         Row: {
@@ -379,41 +459,120 @@ export type Database = {
           },
         ]
       }
+      notification_preferences: {
+        Row: {
+          created_at: string
+          email_notifications: boolean | null
+          id: string
+          push_notifications: boolean | null
+          sms_notifications: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_notifications?: boolean | null
+          id?: string
+          push_notifications?: boolean | null
+          sms_notifications?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_notifications?: boolean | null
+          id?: string
+          push_notifications?: boolean | null
+          sms_notifications?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
+          avatar_url: string | null
           batch: string | null
+          bio: string | null
           created_at: string
           department: string | null
           full_name: string
           id: string
           phone: string | null
           role: string
+          roll_number: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          avatar_url?: string | null
           batch?: string | null
+          bio?: string | null
           created_at?: string
           department?: string | null
           full_name: string
           id?: string
           phone?: string | null
           role: string
+          roll_number?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          avatar_url?: string | null
           batch?: string | null
+          bio?: string | null
           created_at?: string
           department?: string | null
           full_name?: string
           id?: string
           phone?: string | null
           role?: string
+          roll_number?: string | null
           updated_at?: string
           user_id?: string
         }
         Relationships: []
+      }
+      sections: {
+        Row: {
+          batch_id: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          batch_id: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          batch_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sections_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "batches"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       timetables: {
         Row: {
