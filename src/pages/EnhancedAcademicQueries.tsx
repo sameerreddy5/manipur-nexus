@@ -86,8 +86,8 @@ export const EnhancedAcademicQueriesPage = () => {
 
       const queriesWithNames = data?.map(q => ({
         ...q,
-        student_name: Array.isArray(q.student_profile) ? q.student_profile[0]?.full_name : q.student_profile?.full_name,
-        faculty_name: Array.isArray(q.faculty_profile) ? q.faculty_profile[0]?.full_name : q.faculty_profile?.full_name
+        student_name: (q.student_profile as any)?.full_name,
+        faculty_name: (q.faculty_profile as any)?.full_name
       })) || [];
 
       setQueries(queriesWithNames);
@@ -216,14 +216,14 @@ export const EnhancedAcademicQueriesPage = () => {
 
       const queryWithNames = {
         ...mainQuery,
-        student_name: mainQuery.student_profile?.full_name,
-        faculty_name: mainQuery.faculty_profile?.full_name
+        student_name: (mainQuery.student_profile as any)?.full_name,
+        faculty_name: (mainQuery.faculty_profile as any)?.full_name
       };
 
       const repliesWithNames = replies?.map(r => ({
         ...r,
-        student_name: r.student_profile?.full_name,
-        faculty_name: r.faculty_profile?.full_name
+        student_name: (r.student_profile as any)?.full_name,
+        faculty_name: (r.faculty_profile as any)?.full_name
       })) || [];
 
       setSelectedThread({
