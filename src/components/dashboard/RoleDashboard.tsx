@@ -1,3 +1,8 @@
+import { StudentDashboard } from "./StudentDashboard";
+import { FacultyDashboard } from "./FacultyDashboard";
+import { HostelWardenDashboard } from "./HostelWardenDashboard";
+import { MessSupervisorDashboard } from "./MessSupervisorDashboard";
+import { AcademicSectionDashboard } from "./AcademicSectionDashboard";
 import { QuickStatsCard } from "./QuickStatsCard";
 import { RecentActivity } from "./RecentActivity";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +19,26 @@ interface RoleDashboardProps {
 }
 
 export const RoleDashboard = ({ userRole, userEmail }: RoleDashboardProps) => {
+  // Use dedicated dashboard components for specific roles
+  switch (userRole) {
+    case 'Student':
+      return <StudentDashboard />;
+    case 'Faculty':
+      return <FacultyDashboard />;
+    case 'Hostel Warden':
+      return <HostelWardenDashboard />;
+    case 'Mess Supervisor':
+      return <MessSupervisorDashboard />;
+    case 'Academic Section':
+      return <AcademicSectionDashboard />;
+    default:
+      // Fallback to generic dashboard for other roles (Admin, Director)
+      return <GenericDashboard userRole={userRole} userEmail={userEmail} />;
+  }
+};
+
+// Generic dashboard for roles that don't have dedicated dashboards yet
+const GenericDashboard = ({ userRole, userEmail }: RoleDashboardProps) => {
   const getDashboardData = (role: string) => {
     const commonActivities = [
       {
@@ -45,49 +70,6 @@ export const RoleDashboard = ({ userRole, userEmail }: RoleDashboardProps) => {
               timestamp: '4 hours ago',
               status: 'resolved' as const,
               user: 'Hostel Warden'
-            }
-          ]
-        };
-
-      case 'Faculty':
-        return {
-          stats: [
-            { title: "My Courses", value: "3", description: "This semester", icon: BookOpen },
-            { title: "Students", value: "156", description: "Across all courses", icon: Users },
-            { title: "Pending Queries", value: "12", description: "Student questions", icon: MessageSquare, trend: { value: 5, isPositive: false } },
-            { title: "Classes Today", value: "4", description: "Scheduled lectures", icon: Clock }
-          ],
-          activities: [
-            ...commonActivities,
-            {
-              id: '2',
-              type: 'query' as const,
-              title: 'New Academic Query',
-              description: 'Student question about Data Structures assignment',
-              timestamp: '1 hour ago',
-              status: 'pending' as const,
-              user: 'John Doe'
-            }
-          ]
-        };
-
-      case 'Student':
-        return {
-          stats: [
-            { title: "Enrolled Courses", value: "6", description: "This semester", icon: BookOpen },
-            { title: "Attendance", value: "87%", description: "Overall percentage", icon: CheckCircle, trend: { value: 3, isPositive: true } },
-            { title: "Pending Queries", value: "2", description: "Awaiting response", icon: MessageSquare },
-            { title: "Next Class", value: "2:30 PM", description: "Data Structures", icon: Clock }
-          ],
-          activities: [
-            ...commonActivities,
-            {
-              id: '2',
-              type: 'assignment' as const,
-              title: 'Assignment Submitted',
-              description: 'Data Structures Lab Assignment 3',
-              timestamp: '3 hours ago',
-              status: 'resolved' as const
             }
           ]
         };
