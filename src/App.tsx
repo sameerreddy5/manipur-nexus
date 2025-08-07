@@ -15,6 +15,7 @@ import { EnhancedUserCreationPage } from "./pages/EnhancedUserCreation";
 import { BatchManagementPage } from "./pages/BatchManagement";
 import { EnhancedAcademicQueriesPage } from "./pages/EnhancedAcademicQueries";
 import { BackendHealthMonitorPage } from "./pages/BackendHealthMonitor";
+import Reports from "./pages/Reports";
 
 const queryClient = new QueryClient();
 
@@ -110,6 +111,12 @@ const App = () => (
           <Route path="/academic-queries" element={
             <ProtectedRoute>
               <EnhancedAcademicQueriesPage />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/reports" element={
+            <ProtectedRoute>
+              <Reports />
             </ProtectedRoute>
           } />
           

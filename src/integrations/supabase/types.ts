@@ -542,6 +542,109 @@ export type Database = {
         }
         Relationships: []
       }
+      report_views: {
+        Row: {
+          id: string
+          report_config_id: string
+          view_duration: number | null
+          viewed_at: string
+          viewed_by: string
+        }
+        Insert: {
+          id?: string
+          report_config_id: string
+          view_duration?: number | null
+          viewed_at?: string
+          viewed_by: string
+        }
+        Update: {
+          id?: string
+          report_config_id?: string
+          view_duration?: number | null
+          viewed_at?: string
+          viewed_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_report_views_config"
+            columns: ["report_config_id"]
+            isOneToOne: false
+            referencedRelation: "reports_config"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports_config: {
+        Row: {
+          config: Json
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          report_type: string
+          updated_at: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          report_type: string
+          updated_at?: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          report_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reports_data: {
+        Row: {
+          data: Json
+          expires_at: string | null
+          generated_at: string
+          generated_by: string
+          id: string
+          report_config_id: string
+        }
+        Insert: {
+          data: Json
+          expires_at?: string | null
+          generated_at?: string
+          generated_by: string
+          id?: string
+          report_config_id: string
+        }
+        Update: {
+          data?: Json
+          expires_at?: string | null
+          generated_at?: string
+          generated_by?: string
+          id?: string
+          report_config_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_reports_data_config"
+            columns: ["report_config_id"]
+            isOneToOne: false
+            referencedRelation: "reports_config"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sections: {
         Row: {
           batch_id: string

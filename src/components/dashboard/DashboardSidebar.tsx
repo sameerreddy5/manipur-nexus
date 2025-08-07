@@ -4,7 +4,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Home, Users, BookOpen, Calendar, MessageSquare, 
   Settings, FileText, Building, Utensils, Clock,
-  UserPlus, GraduationCap, AlertCircle, PieChart
+  UserPlus, GraduationCap, AlertCircle, PieChart,
+  BarChart3
 } from "lucide-react";
 
 interface SidebarItem {
@@ -24,6 +25,9 @@ const sidebarItems: SidebarItem[] = [
   { title: "Manage Departments", icon: Building, href: "/admin/departments", roles: ["Admin"] },
   { title: "Batch Management", icon: Calendar, href: "/admin/batches", roles: ["Admin"] },
   { title: "Backend Health", icon: AlertCircle, href: "/admin/health", roles: ["Admin"] },
+  
+  // Reports (for Admin, Academic Section, Faculty)
+  { title: "Reports & Analytics", icon: BarChart3, href: "/reports", roles: ["Admin", "Academic Section", "Faculty"] },
   
   // Faculty specific
   { title: "My Courses", icon: BookOpen, href: "/faculty/courses", roles: ["Faculty"] },
