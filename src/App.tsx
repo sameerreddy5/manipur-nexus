@@ -17,6 +17,7 @@ import { BatchManagementPage } from "./pages/BatchManagement";
 import { EnhancedAcademicQueriesPage } from "./pages/EnhancedAcademicQueries";
 import { BackendHealthMonitorPage } from "./pages/BackendHealthMonitor";
 import Reports from "./pages/Reports";
+import FileManager from "./pages/FileManager";
 
 const queryClient = new QueryClient();
 
@@ -118,6 +119,12 @@ const App = () => (
           <Route path="/reports" element={
             <ProtectedRoute>
               <Reports />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/files" element={
+            <ProtectedRoute>
+              <FileManager />
             </ProtectedRoute>
           } />
           

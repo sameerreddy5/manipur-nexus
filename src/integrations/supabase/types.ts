@@ -347,6 +347,54 @@ export type Database = {
           },
         ]
       }
+      file_uploads: {
+        Row: {
+          bucket_name: string
+          category: string | null
+          file_path: string
+          file_size: number
+          filename: string
+          id: string
+          is_deleted: boolean
+          mime_type: string
+          original_name: string
+          related_id: string | null
+          related_type: string | null
+          uploaded_at: string
+          uploaded_by: string
+        }
+        Insert: {
+          bucket_name: string
+          category?: string | null
+          file_path: string
+          file_size: number
+          filename: string
+          id?: string
+          is_deleted?: boolean
+          mime_type: string
+          original_name: string
+          related_id?: string | null
+          related_type?: string | null
+          uploaded_at?: string
+          uploaded_by: string
+        }
+        Update: {
+          bucket_name?: string
+          category?: string | null
+          file_path?: string
+          file_size?: number
+          filename?: string
+          id?: string
+          is_deleted?: boolean
+          mime_type?: string
+          original_name?: string
+          related_id?: string | null
+          related_type?: string | null
+          uploaded_at?: string
+          uploaded_by?: string
+        }
+        Relationships: []
+      }
       holidays: {
         Row: {
           created_at: string

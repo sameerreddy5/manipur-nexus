@@ -5,7 +5,7 @@ import {
   Home, Users, BookOpen, Calendar, MessageSquare, 
   Settings, FileText, Building, Utensils, Clock,
   UserPlus, GraduationCap, AlertCircle, PieChart,
-  BarChart3
+  BarChart3, Files
 } from "lucide-react";
 
 interface SidebarItem {
@@ -28,6 +28,9 @@ const sidebarItems: SidebarItem[] = [
   
   // Reports (for Admin, Academic Section, Faculty)
   { title: "Reports & Analytics", icon: BarChart3, href: "/reports", roles: ["Admin", "Academic Section", "Faculty"] },
+  
+  // File Management (for all authenticated users)
+  { title: "File Manager", icon: Files, href: "/files" },
   
   // Faculty specific
   { title: "My Courses", icon: BookOpen, href: "/faculty/courses", roles: ["Faculty"] },
