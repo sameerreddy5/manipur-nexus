@@ -1,17 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { User, Mail, Phone, Building, Calendar, Edit3, Save, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
+import { useFileUpload } from "@/hooks/useFileUpload";
 
 interface Profile {
   id: string;
@@ -21,7 +22,9 @@ interface Profile {
   batch?: string;
   phone?: string;
   created_at: string;
+  avatar_url?: string;
 }
+
 
 interface Department {
   id: string;
@@ -36,6 +39,44 @@ export const ProfilePage = () => {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const { user, session } = useAuth();
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { uploadFile, uploading } = useFileUpload({
+    bucket: 'profile-pictures',
+    maxSize: 5,
+    allowedTypes: ['image/png', 'image/jpeg', 'image/webp']
+  });
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const uploaded = await uploadFile(file, {
+        category: 'avatar',
+        relatedId: session?.user?.id,
+        relatedType: 'profile'
+      });
+      if (uploaded?.publicUrl) {
+        const { error } = await supabase
+          .from('profiles')
+          .update({ avatar_url: uploaded.publicUrl, updated_at: new Date().toISOString() })
+          .eq('user_id', session?.user?.id);
+        if (error) throw error;
+        toast({ title: 'Avatar updated', description: 'Your profile picture has been updated.' });
+        fetchProfile();
+      }
+    } catch (error) {
+      console.error('Avatar update error:', error);
+      toast({ title: 'Error', description: 'Failed to update avatar', variant: 'destructive' });
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -189,7 +230,17 @@ export const ProfilePage = () => {
         {/* Profile Overview */}
         <Card className="lg:col-span-1">
           <CardHeader className="text-center pb-4">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              className="hidden"
+              onChange={handleAvatarChange}
+            />
             <Avatar className="h-24 w-24 mx-auto mb-4">
+              {profile?.avatar_url && (
+                <AvatarImage src={profile.avatar_url} alt="User profile avatar" />
+              )}
               <AvatarFallback className="text-2xl">
                 {user.fullName ? user.fullName.slice(0, 2).toUpperCase() : user.email.slice(0, 2).toUpperCase()}
               </AvatarFallback>
@@ -198,6 +249,11 @@ export const ProfilePage = () => {
             <Badge variant="secondary" className="w-fit mx-auto">
               {user.role}
             </Badge>
+            <div className="mt-3">
+              <Button size="sm" onClick={handleAvatarClick} disabled={uploading}>
+                {uploading ? 'Uploading…' : 'Change Avatar'}
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-3 text-sm">
